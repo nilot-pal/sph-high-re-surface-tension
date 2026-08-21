@@ -9,7 +9,8 @@ multiphase surface-tension model then shipping in [SPHinXsys](https://github.com
 disappears.*
 
 This repository holds the work that established that, the code I wrote to get around it, and the
-validation data. It is research code from 2023–24, published as a record rather than as a
+validation data. ⭐ **The central finding reproduces from stock upstream code by changing two
+numbers** — see [REPRODUCING.md](REPRODUCING.md), Part 1. It is research code from 2023–24, published as a record rather than as a
 maintained library. **See [Status and honest limitations](#status-and-honest-limitations).**
 
 ---
@@ -119,6 +120,9 @@ with Rui Qiao and Nilotpal Chakraborty from Virginia Tech."* The fix shipped in 
   through unchanged.
 - Some experimental branches remain commented in and out — this is a record of an investigation,
   not a tidied release.
+- **The droplet-impact case files are lost**, so the Re 1154 / We 253 spread-factor numbers are
+  reported rather than reproducible from this repository. The high-Re *failure* reproduces from
+  the stock upstream example regardless — see [REPRODUCING.md](REPRODUCING.md).
 - The problem this was built for (supercooled large droplet impingement, FAA Appendix O icing
   certification) was set aside in early 2024 when I moved to a sponsored compressor project.
 - **The surface-tension problem itself is solved** — by the CMAME work above, not by this code.
