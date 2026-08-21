@@ -26,7 +26,7 @@ each one removing a candidate explanation:
 | 2a | Square droplet relaxing to a circle, **Re ≈ 1** | ✅ Perfect circle. The model works at low Re. |
 | 2b | Same test, **Re ≈ 1025** | ⛔ **All fluid particles vanish by t = 0.4.** Not instability — annihilation. |
 | 2c | Same, with the maximally dissipative Riemann solver | Reaches equilibrium, but the droplet **migrates off-centre and particles pass through the wall** |
-| 3 | Capillary oscillation vs. the Adami *et al.* (2010) benchmark | Diverges from the published mass-centre trajectory even at **low** Re once an initial velocity field is imposed |
+| 3 | Capillary oscillation vs. the Adami *et al.* (2010) benchmark | Diverges from the published mass-centre trajectory even at **low** Re once an initial velocity field is imposed — and [**the same at 900, 3 600 and 14 400 particles**](results/figures/com_oscillation_resolution_study.jpg), so it is not a discretisation artefact |
 | 4 | 2D impact, dissipative solver | Droplet disintegrates; particles escape a domain 20× the droplet radius |
 
 **Conclusion:** the cause is the treatment of interface curvature on *fast-moving* interfaces, not
@@ -74,8 +74,8 @@ tuning an artificial-viscosity coefficient, with no physical justification for t
 Meng *et al.* derive an equivalence between η₂ and the artificial-viscosity parameter α, which is
 the obvious route to quantifying it. **This remains open as far as I know.**
 
-Data: [`results/validation/`](results/validation) · figures and short videos of each experiment in
-[`results/`](results).
+Data, figures and videos: [`results/`](results) — see [`results/README.md`](results/README.md),
+which says exactly what each file is.
 
 ## What happened next
 
