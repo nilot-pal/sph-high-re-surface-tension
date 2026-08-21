@@ -3,7 +3,7 @@
 Complete modified files as they stood in **November 2023**, against **SPHinXsys v1.0-beta.08**
 (released 2023-05-26; the current release until April 2024). Diff them against that revision to see the changes.
 
-⚠ These will **not** apply to current SPHinXsys. `fluid_dynamics_inner.hpp` and
+These will not apply to current SPHinXsys. `fluid_dynamics_inner.hpp` and
 `fluid_dynamics_complex.hpp` no longer exist upstream; the library has been restructured around
 `fluid_integration.hpp` and a `shared_ck/` compute-kernel tree.
 
@@ -32,4 +32,4 @@ The same, with the wall state substituted for the neighbour, the equation of sta
 explicitly as `p* = rho_ref * c^2 / gamma * ((rho*/rho_ref)^gamma - 1)`, and the contact velocity
 projected on the wall normal `n_k` rather than `e_ij`.
 
-Some alternative formulations remain commented in place — this is an investigation record.
+Some alternative formulations are commented in place.
