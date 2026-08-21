@@ -111,8 +111,9 @@ with Rui Qiao and Nilotpal Chakraborty from Virginia Tech."* The fix shipped in 
   the file layout it patches (`fluid_dynamics_inner.hpp`, `fluid_dynamics_complex.hpp`) no longer
   exists in current SPHinXsys, which has since been restructured around `fluid_integration.hpp`
   and a `shared_ck/` compute-kernel tree. **It will not apply to a modern checkout.**
-- Files here are the modified versions as they stood in **November 2023**, against a late-2023
-  `v1.0-beta` checkout. ⟦Exact upstream tag to confirm.⟧ They are full files, not patches, so
+- Files here are the modified versions as they stood in **November 2023**, against **SPHinXsys v1.0-beta.08** — the
+  current release from May 2023 until April 2024, and the last in which these file paths exist
+  (they 404 by v1.0-beta.09). They are full files, not patches, so
   diffing them against that revision is the fastest way to see the changes.
 - **The HLLC solver is 2D.** It returns (ρ\*, u\*, v\*) and carries the transverse component
   through unchanged.

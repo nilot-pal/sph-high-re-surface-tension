@@ -1,7 +1,7 @@
 # Modified SPHinXsys sources
 
-Complete modified files as they stood in **November 2023**, against a late-2023 `v1.0-beta`
-checkout of SPHinXsys. Diff them against that revision to see the changes.
+Complete modified files as they stood in **November 2023**, against **SPHinXsys v1.0-beta.08**
+(released 2023-05-26; the current release until April 2024). Diff them against that revision to see the changes.
 
 ⚠ These will **not** apply to current SPHinXsys. `fluid_dynamics_inner.hpp` and
 `fluid_dynamics_complex.hpp` no longer exist upstream; the library has been restructured around
