@@ -15,7 +15,9 @@ These files are provided as complete modified sources rather than patches, so
 that they can be diffed against the corresponding late-2023 upstream revision.
 They are NOT a contribution to SPHinXsys and were never submitted upstream.
 
-cases/Dambreak.cpp is derived from an SPHinXsys example case.
+cases/square_droplet_high_re.cpp is the stock SPHinXsys example
+  tests/2d_examples/test_2d_square_droplet/src/droplet.cpp with two density
+  constants changed. Same copyright and licence as above.
 
 All other content in this repository (README, docs/, results/) is original work
 by Nilotpal Chakraborty.

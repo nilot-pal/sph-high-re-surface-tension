@@ -9,8 +9,9 @@ This repo holds the experiments that established that, an HLLC Riemann solver I 
 chasing it, and the data. It is 2023–24 research code, kept as a record. See
 [Limitations](#limitations) before relying on any of it.
 
-The central result reproduces from stock upstream code by changing two numbers — see
-[REPRODUCING.md](REPRODUCING.md).
+The central result reproduces from stock upstream code by changing two numbers.
+[`cases/square_droplet_high_re.cpp`](cases/square_droplet_high_re.cpp) is that case, ready to drop
+in; [REPRODUCING.md](REPRODUCING.md) has the build steps.
 
 ## The experiments
 

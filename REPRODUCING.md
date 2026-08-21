@@ -35,6 +35,9 @@ Real mu_a   = 0.0002; /**< Air viscosity. */
 **1b, high Re.** Raise both densities by 10³, keeping the density ratio at 1000 and the viscosity
 ratio at 100:
 
+Ready-made: [`cases/square_droplet_high_re.cpp`](cases/square_droplet_high_re.cpp) is the stock
+file with exactly that change. Drop it in place of `src/droplet.cpp` and rebuild.
+
 ```cpp
 Real rho0_f = 1000.0;  // was 1.0
 Real rho0_a = 1.0;     // was 0.001
