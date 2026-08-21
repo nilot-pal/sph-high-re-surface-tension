@@ -1,0 +1,21 @@
+This repository contains MODIFIED VERSIONS of source files from SPHinXsys,
+Copyright (c) 2017-2023 Xiangyu Hu and the SPHinXsys developers,
+licensed under the Apache License, Version 2.0.
+
+Upstream project: https://github.com/Xiangyu-Hu/SPHinXsys
+
+Modified files in src/ (changes by Nilotpal Chakraborty, 2023):
+  riemann_solver.cpp          - added AcousticRiemannSolver::UHllc, an HLLC
+                                approximate Riemann solver (new code)
+  fluid_dynamics_inner.hpp    - HLLC integration in BaseIntegration1stHalf::interaction
+                                for fluid-fluid pairs
+  fluid_dynamics_complex.hpp  - HLLC integration for fluid-wall pairs
+
+These files are provided as complete modified sources rather than patches, so
+that they can be diffed against the corresponding late-2023 upstream revision.
+They are NOT a contribution to SPHinXsys and were never submitted upstream.
+
+cases/Dambreak.cpp is derived from an SPHinXsys example case.
+
+All other content in this repository (README, docs/, results/) is original work
+by Nilotpal Chakraborty.

@@ -1,0 +1,11 @@
+# Simulation output - large, regenerable
+*.vtp
+*.vtu
+output/
+bin/
+build/
+
+# OS / editor
+Thumbs.db
+.DS_Store
+.vscode/
