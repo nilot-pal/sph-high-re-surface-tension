@@ -9,7 +9,7 @@ What that means in practice, split honestly:
 |---|---|
 | **The central finding** — the shipped multiphase surface-tension model fails at high Re | ✅ **Yes, from stock upstream code.** No file from this repository is needed. See Part 1. |
 | **The HLLC solver** — building and running it | ⚠ Buildable by overwriting three files in a v1.0-beta.08 checkout. See Part 2. |
-| **The droplet-impact validation** — the Re 1154 / We 253 spread-factor numbers | ❌ **No.** The case files are lost. See Part 3. |
+| **The droplet-impact validation** — the Re 7154 / We 259 spread-factor numbers | ❌ **No.** The case files are lost. See Part 3. |
 
 ---
 
@@ -104,10 +104,10 @@ through unchanged.
 ## Part 3 — What cannot be reproduced
 
 **The droplet-impact case files are lost.** The 2D and 3D impact simulations behind the
-spread-factor comparison (D = 2.11 mm, V = 2.04 m/s, Re 1154, We 253) used a case built on top of
-SPHinXsys that is not in my possession — it lived on machines I no longer have. What survives is
-the extracted spread-factor data in [`results/validation/`](results/validation) and the figures
-and videos in [`results/`](results).
+spread-factor comparison (D = 2.71 mm, V = 2.64 m/s, Re 7154, We 259) used a case built on top of
+SPHinXsys that is not in my possession — it lived on machines I no longer have. What survives is the
+figures, videos and oscillation-case data in [`results/`](results) — none of which is from the
+impact runs.
 
 So the impact numbers in the README are **reported, not reproducible from this repository.** They
 are traceable to the write-up in [`docs/`](docs), which is the contemporaneous record, and the

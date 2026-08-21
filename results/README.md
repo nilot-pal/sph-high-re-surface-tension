@@ -15,14 +15,12 @@ is what makes this experiment decisive. Density ratio 1.
 
 | File | What it is |
 |---|---|
-| `com_position_x.csv` | Time vs. mass-centre **x**-position, 28 points over 0 ≤ t ≤ 0.5. Comma-separated, no header. Same axes as the figure above. |
-| `com_position_y.csv` | The same for **y**, 29 points. |
-| `COM_position.dat` | **Raw solver output** from the 2D oscillation run — 18 202 rows, whitespace-separated, header `"run_time" "COM_pos[0]" "COM_pos[1]"`, t up to 0.5017. Note the coordinate scale differs from the CSVs above: this run is centred near the origin (≈ −0.003, +0.002) rather than on the ≈ 0.08 scale of the figure, so the two are from **different configurations of the oscillation case**, not two views of one run. |
+| `COM_position.dat` | **Raw solver output** from the 2D oscillation run — 18 202 rows, whitespace-separated, header `"run_time" "COM_pos[0]" "COM_pos[1]"`, t up to 0.5017. |
 
-⚠ The two CSVs are 28–29 irregularly spaced points across the same interval the figure spans,
-which is the signature of a curve digitised from a published plot rather than solver output.
-⟦Confirm whether these are the Adami *et al.* (2010) reference curves or a coarse run of my own —
-if they are the reference, they should be labelled as such and attributed.⟧
+Two extracted curve files were removed before publication: their provenance could not be
+established — 28–29 irregularly spaced points is the signature of a curve digitised from a
+published plot rather than solver output, and I could not confirm whether they were reference data
+or a coarse run of my own. Unattributed data of unknown origin does not belong in a public repo.
 
 ## `video/`
 

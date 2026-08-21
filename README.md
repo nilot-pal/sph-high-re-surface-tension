@@ -22,7 +22,7 @@ each one removing a candidate explanation:
 
 | # | Experiment | Result |
 |---|---|---|
-| 1 | 3D droplet impact, Re 1154 / We 253, default multiphase surface tension | Droplet **breaks up completely** instead of spreading |
+| 1 | 3D droplet impact, Re 7154 / We 259, default multiphase surface tension | Droplet **breaks up completely** instead of spreading |
 | 2a | Square droplet relaxing to a circle, **Re ≈ 1** | ✅ Perfect circle. The model works at low Re. |
 | 2b | Same test, **Re ≈ 1025** | ⛔ **All fluid particles vanish by t = 0.4.** Not instability — annihilation. |
 | 2c | Same, with the maximally dissipative Riemann solver | Reaches equilibrium, but the droplet **migrates off-centre and particles pass through the wall** |
@@ -55,12 +55,12 @@ in place of the built-in multiphase model for the impact cases.
 
 ## Validation
 
-Spread factor against published experiment at **Re 1154, We 253** (D = 2.11 mm, V = 2.04 m/s):
+Spread factor against published experiment at **Re 7154, We 259** (D = 2.71 mm, V = 2.64 m/s):
 
 | | Max spread factor |
 |---|---|
-| This work, 2D | 5.31 |
-| This work, 3D | 3.14 |
+| This work, 2D | 5.37 |
+| This work, 3D | 3.74 |
 | Experiment | 4.5 |
 
 The residual discrepancy is **not** attributed to the surface-tension model. It tracks the
@@ -120,7 +120,7 @@ with Rui Qiao and Nilotpal Chakraborty from Virginia Tech."* The fix shipped in 
   through unchanged.
 - Some experimental branches remain commented in and out — this is a record of an investigation,
   not a tidied release.
-- **The droplet-impact case files are lost**, so the Re 1154 / We 253 spread-factor numbers are
+- **The droplet-impact case files are lost**, so the Re 7154 / We 259 spread-factor numbers are
   reported rather than reproducible from this repository. The high-Re *failure* reproduces from
   the stock upstream example regardless — see [REPRODUCING.md](REPRODUCING.md).
 - The problem this was built for (supercooled large droplet impingement, FAA Appendix O icing
