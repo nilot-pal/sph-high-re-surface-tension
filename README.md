@@ -5,9 +5,9 @@ surface-tension model then shipping in [SPHinXsys](https://github.com/Xiangyu-Hu
 down at high Reynolds number. In the square-droplet equilibrium test at Re ≈ 10³ the fluid
 particles do not merely disorder — they disappear from the domain.
 
-This repo holds the experiments that established that, an HLLC Riemann solver I wrote while
-chasing it, and the data. It is 2023–24 research code, kept as a record. See
-[Limitations](#limitations) before relying on any of it.
+This repo holds the experiments that established that, the parameter studies behind them, an HLLC
+Riemann solver I wrote while chasing it, and the data. It is 2023–24 research code, kept as a
+record. See [Limitations](#limitations) before relying on any of it.
 
 The central result reproduces from stock upstream code by changing two numbers.
 [`cases/square_droplet_high_re.cpp`](cases/square_droplet_high_re.cpp) is that case, ready to drop
@@ -38,6 +38,24 @@ Reynolds and Weber number each one actually exercises
 single-phase, where surface tension never enters. The multiphase ones run at low Re, or drop
 viscosity and surface tension altogether. Nothing in the suite put high Re and surface tension in
 the same simulation.
+
+## The parameter studies
+
+The table above is the diagnostic sequence. Underneath it sits the parameter work that chose the
+operating point and then moved one factor at a time away from it — a screening design over
+reference velocity and viscosity, a one-factor-at-a-time sweep of density, viscosity, surface
+tension and length scale, a ladder of dissipation-limiter settings, and a 2 × 2 factorial on
+Poiseuille flow, which is the only case here with a closed-form answer to check against.
+
+**[`experiments/`](experiments/) has the factor tables, the recorded responses, and video of every
+run.** Two results from it are worth pulling forward:
+
+- The reference velocity is not the culprit. The case is unstable at the velocity the physics
+  dictates, and there is no stable operating point that is still the problem you wanted to solve.
+- Driving the limiter to η = 1e20 does **not** recover the dissipative solver — 7.8 against 5.37
+  on the same case. The clamp in the acoustic form zeroes the dissipation on expansion however
+  large η gets, so the family η sweeps does not contain the dissipative solver as an endpoint.
+  That is a caution for anyone planning to tune η against experiment.
 
 ## The code
 
@@ -109,8 +127,11 @@ results are the authors' work, and I am not an author on that paper.
 - Some alternative formulations are commented in place. This is an investigation, not a release.
 - The impact case files are gone, so the spread-factor numbers above are reported rather than
   reproducible from here. The high-Re failure reproduces from the stock example regardless.
+  What survives of those runs is the settings and video in [`experiments/`](experiments/) —
+  contemporaneous evidence that they ran and what they produced, not a route to re-running them.
 - The problem itself is solved — by the CMAME work above, not by this code. What is still worth
-  something here is the diagnostic sequence, the example audit, and the HLLC integration.
+  something here is the diagnostic sequence, the parameter studies, the example audit, and the
+  HLLC integration.
 
 ## Licence
 
