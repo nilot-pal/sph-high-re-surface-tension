@@ -5,23 +5,22 @@ them locate the failure. This file is the parameter work underneath it: how the 
 was chosen in the first place, and what happened when each factor was moved on its own.
 
 Everything here ran between **October 2023 and February 2024** on SPHinXsys v1.0-beta.08. The
-videos are ParaView screen captures recorded at the time. Numbers are the ones recorded with each
-run.
+numbers are the ones recorded with each run.
 
-⚠ Read this as a lab notebook, not a paper. The raw case files for most of these are gone; what
-survives is the settings, the recorded response, and the video. Where I am reasoning rather than
-reporting, it says so.
+⚠ These are working notes. The raw case files for most of these runs are gone, so what is left is
+the settings, the response, and the video. Anywhere I am inferring rather than reporting, it says
+so.
 
 ---
 
 ## Choosing the reference velocity
 
-Weakly-compressible SPH needs a reference velocity `U_ref` up front: it sets the artificial speed
-of sound, and through it the acoustic time step and the density variation. Pick it badly and the
-simulation is either uselessly slow or silently wrong. It is not an output, so it cannot be
-checked against anything — which makes it the natural first suspect when a case misbehaves.
+Weakly-compressible SPH needs a reference velocity `U_ref` up front. It sets the artificial speed
+of sound, and through that the acoustic time step and the density variation. Too low and the
+density variation is unphysical; too high and the time step is impractical. Since it is an input,
+nothing in the output checks it, so it was the first thing I looked at.
 
-There is no single balance to take it from, so I took three, each from equating two terms:
+There is no single balance to take it from, so I used three, each equating two terms:
 
 | | Balance | Gives |
 |---|---|---|
@@ -32,16 +31,16 @@ There is no single balance to take it from, so I took three, each from equating 
 **Approach 1** takes `U_ref = min(v1, v2, v3)` — the most restrictive of the three, so no
 mechanism is under-resolved.
 
-**Approach 2** uses `v4 ≈ 0.95 v1` for unit thickness: the velocity a droplet would reach if its
-surface energy converted entirely to kinetic energy. That makes `v4` a **ceiling with physical
-meaning**, and the comparison of `U_ref` against it a prediction rather than a diagnosis:
+**Approach 2** uses `v4 ≈ 0.95 v1` for unit thickness — the velocity a droplet would reach if all
+its surface energy became kinetic energy. So `v4` is a physical ceiling, and comparing `U_ref`
+against it gives a prediction before the run:
 
 - `U_ref < v4` — only part of the surface energy becomes kinetic energy.
 - `U_ref > v4` — the droplet carries kinetic energy the physics cannot account for. Whether that
-  shows up as a visible failure then depends on whether viscosity can dissipate it.
+  shows up as a visible failure depends on whether viscosity can dissipate it.
 
-That gives two factors — `U_ref` relative to `v4`, and viscosity — and a predicted outcome for
-each combination before running anything. Study A tests exactly that.
+That gives two factors — `U_ref` relative to `v4`, and viscosity — with an expected outcome for
+each combination. Study A tests them.
 
 ---
 
@@ -62,11 +61,10 @@ Run 4 is the control: it is the only one where `U_ref` sits at `v4` **and** visc
 enough to absorb what is left. Run 5 is the case of interest — the physical droplet, at
 Re 7155 — and it is the opposite corner on both factors.
 
-**What this settles.** The failure is not an unlucky choice of `U_ref`. Run 5 is unstable at the
-`U_ref` the physics dictates (2.65 m/s, the impact velocity), and the operating point cannot be
-moved to a stable corner without abandoning the problem. Approach 1 would have set `U_ref` to
-3.7e-4 here — four orders of magnitude below the physical velocity, which is why the
-minimum-of-three rule is not usable for this case.
+**What this settles.** The failure is not a bad choice of `U_ref`. Run 5 is unstable at 2.65 m/s,
+which is the impact velocity and therefore not negotiable. Approach 1 would have set `U_ref` to
+3.7e-4 here, four orders of magnitude below that, so the minimum-of-three rule is not usable for
+this case.
 
 ---
 
@@ -86,13 +84,13 @@ size.
 | viscosity down x200 | 2.0 | 1.0 | **1.0e-3** | 1.0 | 1.0e3 | **65e3** | [`b3`](video/b3-viscosity-Re65000.mp4) |
 | surface tension down | 2.0 | 1.0 | 0.2 | **7.3e-2** | 3.07 | **1.0** | [`b4`](video/b4-surface-tension-Re1.0.mp4) |
 
-Every row is consistent with `Re = rho_w * U_ref * l / mu_w` to better than 0.25%, which is worth
-stating because it is checkable from the table alone.
+Every row is consistent with `Re = rho_w * U_ref * l / mu_w` to better than 0.25%, so the table
+can be checked without the case files.
 
-Rows `b1` and `b4` are the informative ones: they change a factor while **holding Re at 1.0**. If
-the failure tracked Reynolds number alone, those two would behave like the low-Re baseline. Rows
-`b2` and `b3` do the reverse — they push Re to 1625 and 65 000 by moving density and viscosity
-respectively, separating "high Re" from "the specific thing that changed".
+Rows `b1` and `b4` change a factor while **holding Re at 1.0**. If the failure tracked Reynolds
+number alone, both should behave like the low-Re baseline. Rows `b2` and `b3` do the reverse,
+pushing Re to 1625 and 65 000 through density and viscosity, which separates the effect of high Re
+from the effect of the factor that moved.
 
 ---
 
@@ -132,36 +130,34 @@ Experimental maximum spread ratio for this droplet is **4.5**.
 At eta = 1e20 the limiter is saturated, so the acoustic solver should be indistinguishable from
 the dissipative one. It is not: **7.8 against 5.37 on the same 2D case.**
 
-*[my reading, not measured]* — the reason is visible in the code above. `SMAX(u_jump * inv_c_ave_, 0)`
-clamps at zero, so when `u_jump` is negative the whole product is zero **no matter how large
-`eta` is**. The dissipative form has no such clamp and returns `rho0c0 * u_jump` throughout. The
-two therefore differ precisely on expansion, and no value of eta closes the gap. The limit of the
-acoustic solver is one-sided dissipation, not the dissipative solver.
+*[my reading, not measured]* — `SMAX(u_jump * inv_c_ave_, 0)` clamps at zero, so when `u_jump` is
+negative the product is zero however large `eta` is. The dissipative form has no clamp and returns
+`rho0c0 * u_jump` throughout. The two differ on expansion, and raising eta does not close that
+gap — what eta approaches is dissipation in compression only.
 
-This matters for the open problem in the root README. If eta is going to be tuned against
-experiment, it is worth knowing that the family it sweeps does not contain the dissipative solver
-as an endpoint.
+This bears on the open problem in the root README: tuning eta against experiment sweeps a family
+that does not include the dissipative solver at either end.
 
-A related point, established in the discussions with the TUM group: the various Riemann solvers
-are largely different routes to the same numerical dissipation in differing amounts, and the
-acoustic solver can be driven to high dissipation through a high `U_ref` alone. That is consistent
-with Study A, where `U_ref` and the observed stability move together.
+A related point from the discussions with the TUM group is that the different Riemann solvers are
+largely different routes to the same numerical dissipation in differing amounts, and that the
+acoustic solver can be pushed to high dissipation through a high `U_ref` alone. Study A is
+consistent with that — `U_ref` and the observed stability move together.
 
 ---
 
 ## Study D — Poiseuille flow, 2 x 2
 
-The droplet cases have no analytical solution, so a limiter tuned on them cannot be checked.
-Plane Poiseuille flow does. Two limiter settings crossed with two Reynolds numbers — a full
-factorial, and the only study here whose answer is known in advance.
+The droplet cases have no analytical solution, so a limiter tuned on them cannot be checked
+against anything. Plane Poiseuille flow does. Two limiter settings crossed with two Reynolds
+numbers, and the only study here where the answer is known in advance.
 
 | | eta = 3 | eta = 1e20 |
 |---|---|---|
 | **Re = 0.0125** | [`d1`](video/d1-poiseuille-eta3-Re0.0125.mp4) | [`d3`](video/d3-poiseuille-eta1e20-Re0.0125.mp4) |
 | **Re = 5** | [`d2`](video/d2-poiseuille-eta3-Re5.mp4) | [`d4`](video/d4-poiseuille-eta1e20-Re5.mp4) |
 
-This is the study I would run first if starting again. Verifying the limiter against a closed-form
-solution constrains it in a way that matching a spread ratio does not.
+If I were starting again I would run this first. A closed-form solution pins the limiter down more
+tightly than matching a spread ratio does.
 
 ---
 
@@ -186,17 +182,14 @@ The square droplet at the operating point of interest, and the 3D impact case.
 | Same, 3D | [`g2`](video/g2-square-droplet-3d-Re7155.mp4) |
 | 3D impact, no surrounding air | [`g3`](video/g3-impact-3d-no-air.mp4) |
 
-Note the root README quotes **Re 7154 / We 259** for this case, computed from the droplet
-diameter; the meeting slides quote **7155 / 260** as the nominal target. Same case, same
-conclusions — the difference is rounding in the input, not a discrepancy in the result.
+The root README quotes **Re 7154 / We 259** for this case, computed from the droplet diameter,
+while the meeting slides quote **7155 / 260** as the nominal target. Same case; the difference is
+rounding in the input.
 
 ---
 
 ## Provenance
 
-The videos were recorded to a screen-capture host and linked from the group-meeting decks rather
-than embedded in them. They were recovered from that host and committed here in **August 2026**;
-had the account lapsed they would have been lost.
-
-Resolution is whatever the ParaView window happened to be — 388x384 up to 1264x560, 4 to 22
-seconds. They are contemporaneous evidence, not figures prepared for publication.
+The videos are ParaView screen captures made at the time of each run, linked from the
+group-meeting decks and collected here in August 2026. Resolution varies with whatever the
+ParaView window was — 388x384 to 1264x560, 4 to 22 seconds each.
