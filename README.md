@@ -3,7 +3,7 @@
 Working on supercooled-large-droplet impingement for in-flight icing, I found that the multiphase
 surface-tension model then shipping in [SPHinXsys](https://github.com/Xiangyu-Hu/SPHinXsys) breaks
 down at high Reynolds number. In the square-droplet equilibrium test at Re ≈ 10³ the fluid
-particles do not merely disorder — they disappear from the domain.
+particles do not merely disorder, they disappear from the domain.
 
 This repo holds the experiments that established that, the parameter studies behind them, an HLLC
 Riemann solver I wrote while chasing it, and the data. It is 2023–24 research code, kept as a
@@ -27,7 +27,7 @@ Each one rules out an explanation for the last.
 | 4 | 2D impact, dissipative solver | Droplet disintegrates; particles leave a domain 20× the droplet radius |
 
 Experiment 3 decides it. The failure survives at low Re as soon as the interface is moving, so the
-cause is not insufficient dissipation at high Re — it is how curvature is computed on fast-moving
+cause is not insufficient dissipation at high Re; it is how curvature is computed on fast-moving
 interfaces. The three particle resolutions in
 [that figure](results/figures/com_oscillation_resolution_study.jpg) lie on top of each other, so it
 is not a discretisation artefact either.
@@ -44,7 +44,7 @@ the same simulation.
 The table above is the diagnostic sequence. The parameter work behind it chose the operating point
 and then moved one factor at a time away from it: a screening design over reference velocity and
 viscosity, a one-factor-at-a-time sweep of density, viscosity, surface tension and length scale, a
-ladder of dissipation-limiter settings, and a 2 × 2 factorial on Poiseuille flow — the only case
+ladder of dissipation-limiter settings, and a 2 × 2 factorial on Poiseuille flow, the only case
 here with a closed-form answer to check against.
 
 **[`experiments/`](experiments/) has the factor tables, the recorded responses, and video of every
@@ -52,7 +52,7 @@ run.** Two results from it:
 
 - The reference velocity is not the cause. The case is unstable at 2.65 m/s, which is the impact
   velocity and so cannot be changed.
-- Driving the limiter to η = 1e20 does **not** recover the dissipative solver — 7.8 against 5.37
+- Driving the limiter to η = 1e20 does **not** recover the dissipative solver, 7.8 against 5.37
   on the same case. The clamp in the acoustic form zeroes the dissipation on expansion however
   large η gets, so tuning η against experiment sweeps a family that never reaches the dissipative
   solver.
@@ -61,7 +61,7 @@ run.** Two results from it:
 
 | File | Change |
 |---|---|
-| [`src/riemann_solver.cpp`](src/riemann_solver.cpp) | Adds `AcousticRiemannSolver::UHllc` — an HLLC solver: wave-speed estimates `S_L`/`S_R`, contact-wave speed `S*`, four-branch intermediate-state selection returning (ρ\*, u\*, v\*). The library shipped a linearised Roe-type solver, whose implicit dissipation was the first suspect. |
+| [`src/riemann_solver.cpp`](src/riemann_solver.cpp) | Adds `AcousticRiemannSolver::UHllc`, an HLLC solver: wave-speed estimates `S_L`/`S_R`, contact-wave speed `S*`, four-branch intermediate-state selection returning (ρ\*, u\*, v\*). The library shipped a linearised Roe-type solver, whose implicit dissipation was the first suspect. |
 | [`src/fluid_dynamics_inner.hpp`](src/fluid_dynamics_inner.hpp) | HLLC wired into `BaseIntegration1stHalf::interaction` for fluid–fluid pairs. The intermediate density goes back through the equation of state for the momentum term; the contact velocity projected on `e_ij` drives density dissipation. |
 | [`src/fluid_dynamics_complex.hpp`](src/fluid_dynamics_complex.hpp) | Same for fluid–wall pairs, with the equation of state written out, `p* = ρ_ref c²/γ · ((ρ*/ρ_ref)^γ − 1)`, projected on the wall normal. |
 
@@ -79,7 +79,7 @@ Spread factor against published experiment, D = 2.71 mm, V = 2.64 m/s, Re 7154, 
 | 3D | 3.74 |
 | Experiment | 4.5 |
 
-The gap is not the surface-tension model. It tracks the Riemann solver's implicit dissipation —
+The gap is not the surface-tension model. It tracks the Riemann solver's implicit dissipation,
 with the dissipative solver the unphysical splash goes away and spreading matches the reference
 closely, at the cost of over-damping.
 
@@ -95,9 +95,9 @@ Data and figures: [`results/`](results).
 
 I raised the problem upstream:
 
-- [#378](https://github.com/Xiangyu-Hu/SPHinXsys/issues/378) (Aug 2023) — cannot reproduce the
+- [#378](https://github.com/Xiangyu-Hu/SPHinXsys/issues/378) (Aug 2023), cannot reproduce the
   Adami *et al.* (2010) oscillation benchmark
-- [#497](https://github.com/Xiangyu-Hu/SPHinXsys/issues/497) (Dec 2023) — the high-Re failure, with
+- [#497](https://github.com/Xiangyu-Hu/SPHinXsys/issues/497) (Dec 2023), the high-Re failure, with
   the parameter study
 
 The maintainers later traced it to *zero-surface-energy modes*: the surface-tension contributions
@@ -117,26 +117,25 @@ results are the authors' work, and I am not an author on that paper.
 
 ## Limitations
 
-- Never submitted upstream. The files it patches — `fluid_dynamics_inner.hpp`,
-  `fluid_dynamics_complex.hpp` — no longer exist in current SPHinXsys, which was restructured
+- Never submitted upstream. The files it patches (`fluid_dynamics_inner.hpp`, `fluid_dynamics_complex.hpp`) no longer exist in current SPHinXsys, which was restructured
   around `fluid_integration.hpp` and a `shared_ck/` tree. This will not apply to a modern checkout.
 - The sources are as they stood in November 2023, against **v1.0-beta.08** (the current release
   from May 2023 to April 2024, and the last with these paths). Full files rather than patches, so
   diffing against that tag is the quickest way to see what changed.
-- The HLLC path is 2D. `UHllc` returns (ρ\*, u\*, v\*) and passes the transverse component through.
+- The HLLC path is 2D. `UHllc` returns (ρ\*, u\*, v\*), and passes the transverse component through.
 - Some alternative formulations are commented in place. This is an investigation, not a release.
 - The impact case files are gone, so the spread-factor numbers above are reported rather than
   reproducible from here. The high-Re failure reproduces from the stock example regardless.
   [`experiments/`](experiments/) has the settings and video for those runs, which shows what they
   produced but will not let you repeat them.
-- The problem itself is solved — by the CMAME work above, not by this code. What is still worth
+- The problem itself is solved: by the CMAME work above, not by this code. What is still worth
   something here is the diagnostic sequence, the parameter studies, the example audit, and the
   HLLC integration.
 
 ## Licence
 
 Apache 2.0, from SPHinXsys. The three files in [`src/`](src) are modified SPHinXsys sources, not
-original in their entirety — see [`NOTICE`](NOTICE). Upstream:
+original in their entirety, see [`NOTICE`](NOTICE). Upstream:
 
 > C. Zhang, M. Rezavand, Y. Zhu, Y. Yu, D. Wu, W. Zhang, J. Wang, X. Hu. *SPHinXsys: An
 > open-source multi-physics and multi-resolution library based on smoothed particle hydrodynamics.*

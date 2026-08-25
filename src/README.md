@@ -9,7 +9,7 @@ These will not apply to current SPHinXsys. `fluid_dynamics_inner.hpp` and
 
 ## `riemann_solver.cpp`
 
-Adds `AcousticRiemannSolver::UHllc(...)` — an HLLC approximate Riemann solver:
+Adds `AcousticRiemannSolver::UHllc(...)`, an HLLC approximate Riemann solver:
 
 - left/right wave-speed estimates `S_L = u_L - c_L q_L`, `S_R = u_R + c_R q_R`
 - contact-wave speed `S*` from the pressure/momentum jump relation
@@ -17,7 +17,7 @@ Adds `AcousticRiemannSolver::UHllc(...)` — an HLLC approximate Riemann solver:
 
 `NoRiemannSolver::UHllc` is a no-op stub so the interface is satisfied when no solver is active.
 
-## `fluid_dynamics_inner.hpp` — fluid–fluid pairs
+## `fluid_dynamics_inner.hpp`, fluid–fluid pairs
 
 In `BaseIntegration1stHalf<RiemannSolverType>::interaction`:
 
@@ -26,7 +26,7 @@ In `BaseIntegration1stHalf<RiemannSolverType>::interaction`:
   `fluid_.getPressure(UHllc[0])`
 - density dissipation uses the contact velocity projected on `e_ij`
 
-## `fluid_dynamics_complex.hpp` — fluid–wall pairs
+## `fluid_dynamics_complex.hpp`: fluid–wall pairs
 
 The same, with the wall state substituted for the neighbour, the equation of state written out
 explicitly as `p* = rho_ref * c^2 / gamma * ((rho*/rho_ref)^gamma - 1)`, and the contact velocity

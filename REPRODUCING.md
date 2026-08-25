@@ -9,7 +9,7 @@ them, and it will not compile on its own.
 | Building the HLLC solver | Overwrite three files in a v1.0-beta.08 checkout. Part 2. |
 | The Re 7154 / We 259 spread-factor numbers | Not reproducible. The case files are gone. Part 3. |
 
-## Part 1 — the failure, from stock upstream code
+## Part 1: the failure, from stock upstream code
 
 The failure shows up in SPHinXsys's own `test_2d_square_droplet` example by changing two numbers.
 
@@ -18,8 +18,7 @@ git clone https://github.com/Xiangyu-Hu/SPHinXsys.git
 cd SPHinXsys && git checkout v1.0-beta.08
 ```
 
-Build with the `Dockerfile` at the repo root — it pins Boost, TBB, Eigen and SimBody, which is
-most of the work — or follow the upstream build instructions for that tag.
+Build with the `Dockerfile` at the repo root (it pins Boost, TBB, Eigen and SimBody, which is most of the work) or follow the upstream build instructions for that tag.
 
 **1a, low Re.** Run `tests/2d_examples/test_2d_square_droplet` unmodified. The square patch of
 water relaxes to a circle and comes to rest. Stock parameters in `src/droplet.cpp`:
@@ -57,9 +56,9 @@ treatment on fast-moving interfaces rather than a high-Re dissipation problem.
 
 Trajectory data: [`results/validation/COM_position.dat`](results/validation/COM_position.dat).
 
-Build at v1.2 or later and none of this fails — that is the point.
+Build at v1.2 or later and none of this fails; that is the point.
 
-## Part 2 — building the HLLC solver
+## Part 2, building the HLLC solver
 
 The three files in [`src/`](src) are complete modified sources against v1.0-beta.08:
 
@@ -80,7 +79,7 @@ git diff --stat
 Only against v1.0-beta.08. Current SPHinXsys has neither `fluid_dynamics_inner.hpp` nor
 `fluid_dynamics_complex.hpp`; porting would be a rewrite, not a rebase. The HLLC path is 2D.
 
-## Part 3 — what cannot be reproduced
+## Part 3, what cannot be reproduced
 
 The droplet-impact case files are gone. The 2D and 3D runs behind the spread-factor comparison
 (D = 2.71 mm, V = 2.64 m/s, Re 7154, We 259) sat on machines I no longer have. What survives is
