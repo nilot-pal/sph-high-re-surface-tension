@@ -26,11 +26,16 @@ Each one rules out an explanation for the last.
 | 3 | Capillary oscillation vs. Adami *et al.* (2010) | Mass-centre trajectory diverges from the benchmark even at low Re, once an initial velocity field is imposed |
 | 4 | 2D impact, dissipative solver | Droplet disintegrates; particles leave a domain 20× the droplet radius |
 
-Experiment 3 decides it. The failure survives at low Re as soon as the interface is moving, so the
-cause is not insufficient dissipation at high Re; it is how curvature is computed on fast-moving
-interfaces. The three particle resolutions in
-[that figure](results/figures/com_oscillation_resolution_study.jpg) lie on top of each other, so it
-is not a discretisation artefact either.
+Experiment 3 decides it, and the figure is the reason why.
+
+![Mass-centre oscillation against the Adami benchmark, at three particle resolutions](results/figures/com_oscillation_resolution_study.jpg)
+
+*Mass-centre trajectory of an oscillating droplet against Adami et al. (2010), run at three
+particle resolutions. **The three resolutions lie on top of each other**, so the departure from the
+benchmark is not a discretisation artefact; refining the particle spacing does not move it.*
+
+The failure survives at low Re as soon as the interface is moving, so the cause is not insufficient
+dissipation at high Re. It is how curvature is computed on fast-moving interfaces.
 
 Why it had gone unnoticed: I went through every example shipped with the library and tabulated the
 Reynolds and Weber number each one actually exercises
