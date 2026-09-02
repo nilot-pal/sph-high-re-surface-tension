@@ -7,7 +7,7 @@ was chosen in the first place, and what happened when each factor was moved on i
 Everything here ran between **October 2023 and February 2024** on SPHinXsys v1.0-beta.08. The
 numbers are the ones recorded with each run.
 
-⚠ These are working notes. The raw case files for most of these runs are gone, so what is left is
+These are working notes. The raw case files for most of these runs are gone, so what is left is
 the settings, the response, and the video. Anywhere I am inferring rather than reporting, it says
 so.
 
