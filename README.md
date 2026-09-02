@@ -5,6 +5,15 @@ surface-tension model then shipping in [SPHinXsys](https://github.com/Xiangyu-Hu
 down at high Reynolds number. In the square-droplet equilibrium test at Re ≈ 10³ the fluid
 particles do not merely disorder, they disappear from the domain.
 
+![Three frames from the square-droplet case at Re 1625: the droplet intact, then torn apart, then a domain containing no fluid particles at all](results/figures/square_droplet_collapse_Re1625.png)
+
+*The square-droplet equilibrium case at Re 1625, three frames from one run. Left, t = 0.9 s: the
+patch has relaxed towards a circle and the interface is beginning to disorder. Middle, t = 1.5 s:
+it has torn apart, with blue and red mixed through the domain. Right, t = 3.3 s: every fluid
+particle is gone and only the fixed wall particles remain. These are frames from the recorded run
+in [`experiments/video/b2-density-Re1625.mp4`](experiments/video/b2-density-Re1625.mp4), not
+post-processed.*
+
 This repo holds the experiments that established that, the parameter studies behind them, an HLLC
 Riemann solver I wrote while chasing it, and the data. It is 2023–24 research code, kept as a
 record. See [Limitations](#limitations) before relying on any of it.
